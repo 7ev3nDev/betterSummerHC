@@ -20,7 +20,17 @@
         "https://summer.hackclub.com/*"
       ],
       "js": [
+        "scripts/browser-polyfill.min.js",
         "scripts/content.js"
+      ]
+    },
+    {
+      "matches": [
+        "https://summer.hackclub.com/shop"
+      ],
+      "js": [
+        "scripts/browser-polyfill.min.js",
+        "scripts/shop.js"
       ]
     }
   ],

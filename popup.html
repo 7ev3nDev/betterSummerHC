@@ -1,11 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <title>a</title>
   <link rel="stylesheet" href="styles/popup.css">
+  <script defer src="scripts/browser-polyfill.min.js"></script>
   <script src="popup.js" defer></script>
 </head>
+
 <body>
-  <p>Ciao!</p>
+  <div class="tabs">
+    <button data-tab="shop" data-url="/shop" class="active">Shop</button>
+    <button data-tab="new">New Features</button>
+  </div>
+
+  <div class="content active" id="shop">
+    <p>a</p>
+  </div>
+
+  <div class="content" id="new">
+    <h2>New Features</h2>
+    <p>Stay tuned for more updates!</p>
+  </div>
 </body>
+
 </html>
