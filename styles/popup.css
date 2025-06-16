@@ -82,3 +82,36 @@ div.title>button {
         display: block;
     }
 }
+
+#shop>.hidden {
+    display: none;
+    &>div {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+
+        &>div {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 4px;
+            background-color: var(--main-c-light);
+            border-radius: 8px;
+
+            & > button {
+                padding: 2px 8px;
+                background-color: var(--main-c);
+                color: var(--main-c-text);
+                border: none;
+                border-radius: 8px;
+                cursor: pointer;
+                font-size: .8rem;
+
+                &:hover {
+                    background-color: var(--main-c-dark);
+                    transition: all .4s;
+                }
+            }
+        }
+    }
+}

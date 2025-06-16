@@ -28,7 +28,6 @@ cards.forEach((card, index) => {
 
     btn.addEventListener('click', async () => {
         const res = await browser.storage.sync.get(["shopHidden"]);
-          
 
         if (!res) {
             browser.storage.sync.set({ shopHidden: [ID] }, () => {
@@ -43,15 +42,15 @@ cards.forEach((card, index) => {
         if (!shopHidden.includes(ID)) {
             shopHidden.push(ID);
 
-            const _ = await browser.storage.sync.set({ shopHidden });
+            await browser.storage.sync.set({ shopHidden });
             card.style.display = "none";
+            console.log(`Item with ID '${ID}' hidden.`);
         }
     });
 
     card.appendChild(btn);
 });
 
-console.log("Shop page detected. Setting up hide buttons.");
 (async () => {
     const result = await browser.storage.sync.get(["shopHidden"]);
     if (!result) {
@@ -61,11 +60,10 @@ console.log("Shop page detected. Setting up hide buttons.");
 
         return;
     }
-    console.log(result)
+
     const shopHidden = result.shopHidden || [];
-    console.log(shopHidden);
-    const items = document.querySelectorAll('.card-with-gradient[data-padding="md"]');
-    items.forEach((item, index) => {
+
+    cards.forEach((item, index) => {
         const ID = getID(item, index);
 
         if (shopHidden.includes(ID)) {
@@ -76,23 +74,20 @@ console.log("Shop page detected. Setting up hide buttons.");
     console.log("Shop items hidden based on stored preferences.");
 })();
 
-// (result) => {
-//     if (!result) {
-//         browser.storage.sync.set({shopHidden: []}, () => {
-//             console.log("No hidden items found. Creating new list.");
-//         });
+browser.runtime.onMessage.addListener((message) => {
+    console.log("Received message:", message);
+    if (message.action === 'unhide') {
+        const id = message.id.split(".")[0].trim();
+        const item = Array.from(cards)[id];
+        
+        if (!item) return;
 
-//         return;
-//     }
-
-//     const shopHidden = result.shopHidden || [];
-//     console.log(shopHidden)
-
-//     Array.from(items).forEach((item, index) => {
-//         const title =  index + ". " + item.querySelector(".tracking-tight").textContent.trim();
-
-//         if (shopHidden.includes(title)) {
-//             item.style.display = "none";
-//         }
-//     });
-// }
+        item.style.display = 'block';
+        browser.storage.sync.get(["shopHidden"]).then(res => {
+            const updated = res.shopHidden.filter(i => i !== id);
+            browser.storage.sync.set({ shopHidden: updated }).then(() => {
+                console.log(`Item with ID '${id}' unhidden.`);
+            });
+        });
+    }
+});
