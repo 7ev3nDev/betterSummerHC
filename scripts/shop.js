@@ -1,6 +1,8 @@
 function getID(card, index) {
-    return index + ". " + card.querySelector(".flex-grow h3.font-bold").textContent.trim();
+    return index + ". " + card.querySelector("h3").textContent.trim();
 }
+
+let cards = []
 
 function listenerFn(message) {
     if (message.action === 'unhide') {
@@ -33,7 +35,7 @@ const shopFn = async (loc = window.location) => {
         })
     )
 
-    const cards = document.querySelectorAll('.my-6 .flex.flex-col .card-with-gradient[data-padding="md"]');
+    cards = document.querySelectorAll('.my-6 .flex.flex-col .card-with-gradient[data-padding="md"]');
 
     cards.forEach((card, index) => {
         const ID = getID(card, index);
