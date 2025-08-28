@@ -83,6 +83,7 @@ tabsBtns.forEach(bt => {
 
 // General
 const infoButton = document.querySelector("input#hide-info");
+const mapButton = document.querySelector("input#hide-map");
 
 if (infoButton) {
     infoButton.addEventListener("change", async (e) => {
@@ -104,5 +105,28 @@ if (infoButton) {
         console.log(result)
 
         infoButton.checked = result.hideInfoBanner || false;
+    })();
+}
+
+if (mapButton) {
+    mapButton.addEventListener("change", async (e) => {
+        const hideMap = e.target.checked;
+        console.info("Setting hideMap to:", hideMap);
+
+        await browser.storage.sync.set({ hideMap });
+        console.info("hideMap updated in storage.");
+
+        browser.tabs.query({ active: true, currentWindow: true }).then(tabs => {
+            const activeTab = tabs[0];
+            browser.tabs.sendMessage(activeTab.id, { action: 'hideMap', force: hideMap })
+                .catch(err => console.warn('Content script may not be loaded in this tab:', err));
+        });
+    });
+    
+    (async () => {
+        const result = await browser.storage.sync.get(["hideMap"]);
+        console.log(result)
+
+        mapButton.checked = result.hideMap || false;
     })();
 }
