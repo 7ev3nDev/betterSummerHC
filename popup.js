@@ -84,6 +84,7 @@ tabsBtns.forEach(bt => {
 // General
 const infoButton = document.querySelector("input#hide-info");
 const mapButton = document.querySelector("input#hide-map");
+const surveyButton = document.querySelector("input#hide-survey");
 
 if (infoButton) {
     infoButton.addEventListener("change", async (e) => {
@@ -128,5 +129,28 @@ if (mapButton) {
         console.log(result)
 
         mapButton.checked = result.hideMap || false;
+    })();
+}
+
+if (surveyButton) {
+    surveyButton.addEventListener("change", async (e) => {
+        const hideSurvey = e.target.checked;
+        console.info("Setting hideSurvey to:", hideSurvey);
+
+        await browser.storage.sync.set({ hideSurvey });
+        console.info("hideSurvey updated in storage.");
+
+        browser.tabs.query({ active: true, currentWindow: true }).then(tabs => {
+            const activeTab = tabs[0];
+            browser.tabs.sendMessage(activeTab.id, { action: 'hideSurvey', force: hideSurvey })
+                .catch(err => console.warn('Content script may not be loaded in this tab:', err));
+        });
+    });
+
+    (async () => {
+        const result = await browser.storage.sync.get(["hideSurvey"]);
+        console.log(result)
+
+        surveyButton.checked = result.hideSurvey || false;
     })();
 }

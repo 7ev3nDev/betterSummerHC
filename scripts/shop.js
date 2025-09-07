@@ -23,11 +23,10 @@ const shopFn = async (loc = window.location) => {
     if (!(loc.url || loc.href).includes("shop"))
         return;
 
-    // made with AI because it's too hard. sorry :(
     await (
         new Promise(resolve => {
             const checkExist = setInterval(() => {
-                if (document.querySelector('.card-with-gradient[data-padding="md"]')) {
+                if (document.querySelectorAll('form[action^="/shop/items/"]')) {
                     clearInterval(checkExist);
                     resolve();
                 }
@@ -35,7 +34,13 @@ const shopFn = async (loc = window.location) => {
         })
     )
 
-    cards = document.querySelectorAll('.my-6 .flex.flex-col .card-with-gradient[data-padding="md"]');
+    cards = Array.from(document.querySelectorAll('form[action^="/shop/items/"]')).map(el => el.closest("[data-hover]") || el.parentElement.parentElement.parentElement.parentElement.parentElement);
+    
+    if ( cards.length === 0 ) {
+        console.error("No shop items found. The page structure may have changed.");
+        console.warn("Something changed in the shop page structure. Please report this issue.");
+        return;
+    }
 
     cards.forEach((card, index) => {
         const ID = getID(card, index);
@@ -118,5 +123,3 @@ window.addEventListener("custom:navigation", (e) => {
     shopFn(new URL(e.detail.url));
 });
 shopFn();
-
-
