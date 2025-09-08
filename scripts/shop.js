@@ -17,6 +17,11 @@ function listenerFn(message) {
             browser.storage.sync.set({ shopHidden: updated })
         });
     }
+    if ( message.action === 'unhideAll' ) {
+        cards.forEach(item => {
+            item.style.display = 'block';
+        });
+    }
 }
 
 const shopFn = async (loc = window.location) => {

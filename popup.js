@@ -53,6 +53,7 @@ tabsBtns.forEach(bt => {
 
     const hideDiv = document.querySelector('.hidden > div');
     hideDiv.innerHTML = '';
+    shopHidden.sort((a, b) => parseInt(a.split(".")[0].trim()) - parseInt(b.split(".")[0].trim()));
     shopHidden.forEach(item => {
         const itemElement = document.createElement('div');
         itemElement.textContent = item.split(".")[1].trim();
@@ -80,6 +81,22 @@ tabsBtns.forEach(bt => {
 
     document.querySelector('.hidden').style.display = shopHidden.length > 0 ? 'block' : 'none';
 })().catch(err => console.error('Error loading hidden items:', err));
+
+// Unhide all button
+const unhideAllButton = document.querySelector('button#unhide-all');
+if (unhideAllButton) {
+    unhideAllButton.addEventListener('click', () => {
+        browser.storage.sync.set({ shopHidden: [] }).then(() => {
+            document.querySelector('.hidden > div').innerHTML = '';
+            document.querySelector('.hidden').style.display = 'none';
+            browser.tabs.query({ active: true, currentWindow: true }).then(tabs => {
+                const activeTab = tabs[0];
+                browser.tabs.sendMessage(activeTab.id, { action: 'unhideAll' })
+                    .catch(err => console.warn('Content script may not be loaded in this tab:', err));
+            });
+        });
+    });
+}
 
 // General
 const infoButton = document.querySelector("input#hide-info");

@@ -148,6 +148,27 @@ div.title>button {
 
 #shop>.hidden {
     display: none;
+    
+    &>p {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        
+        &>button {
+            padding: 4px 6px;
+            background-color: darkred;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+
+            &:hover {
+                background-color: var(--main-c-dark);
+                transition: all .4s;
+            }
+        }
+    }
 
     &>div {
         overflow-y: auto;
