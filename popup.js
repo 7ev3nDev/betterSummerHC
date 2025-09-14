@@ -14,7 +14,7 @@ function toggleTab(tabName) {
 }
 
 tabsBtns.forEach(bt => {
-    if (bt.dataset.url != undefined) {
+    if (bt.dataset.url !== undefined) {
         const url = `https://summer.hackclub.com${bt.dataset.url}`;
 
         browser.tabs.query({ active: true, currentWindow: true }).then(tabs => {
@@ -26,7 +26,7 @@ tabsBtns.forEach(bt => {
     }
 
     bt.addEventListener('click', () => {
-        if (bt.dataset.url != undefined) {
+        if (bt.dataset.url !== undefined) {
             const url = `https://summer.hackclub.com${bt.dataset.url}`;
 
             browser.tabs.query({ active: true, currentWindow: true }).then(tabs => {

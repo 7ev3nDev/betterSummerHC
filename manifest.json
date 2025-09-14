@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "betterSummerHC",
-  "version": "1.1.0",
+  "version": "1.2.1",
   "description": "An extension that makes the Summer HackClub experience better with new features!",
   "permissions": [
     "activeTab",

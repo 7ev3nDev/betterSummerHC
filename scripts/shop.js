@@ -39,7 +39,7 @@ const shopFn = async (loc = window.location) => {
         })
     )
 
-    cards = Array.from(document.querySelectorAll('form[action^="/shop/items/"]')).map(el => el.closest("[data-hover]") || el.parentElement.parentElement.parentElement.parentElement.parentElement);
+    cards = Array.from(document.querySelectorAll('form[action^="/shop/items/"]')).map(el => el.closest('div[id^="item"]') || el.closest("[data-hover]") || el.parentElement.parentElement.parentElement.parentElement.parentElement);
     
     if ( cards.length === 0 ) {
         console.error("No shop items found. The page structure may have changed.");
